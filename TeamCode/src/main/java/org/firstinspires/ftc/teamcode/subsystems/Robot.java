@@ -30,6 +30,7 @@ public class Robot {
         updateAngle();
         theta = angles.firstAngle;
         linearOpMode.telemetry.update();
+        clipTheta();
     }
     // initialize IMU to get angle
     public void initIMU() {
@@ -58,5 +59,12 @@ public class Robot {
     }
     public double getTheta() {
         return theta;
+    }
+    public void clipTheta() {
+        if (theta > 180) {
+            theta = - 180;
+        } else if (theta < -180){
+            theta = 180;
+        }
     }
 }

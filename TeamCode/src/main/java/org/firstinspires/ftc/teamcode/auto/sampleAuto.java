@@ -6,8 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous(name = "Auto")
 public class sampleAuto extends LinearOpMode {
 
+    boolean trueFalse = true;
     @Override
     public void runOpMode() {
 
     }
+
 }

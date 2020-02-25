@@ -4,8 +4,8 @@ import org.firstinspires.ftc.teamcode.Action;
 
 public class AHolder {
     Action action;
-    Point point;
-    public AHolder(Point point, Action action) {
+    int point;
+    public AHolder(int point, Action action) {
         this.action = action;
         this.point = point;
     }

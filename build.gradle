@@ -8,9 +8,13 @@ buildscript {
         google()
         jcenter()
     }
+
+    apply plugin: 'java-library'
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
     }
+
 }
 
 // This is now required because aapt2 has to be downloaded from the
