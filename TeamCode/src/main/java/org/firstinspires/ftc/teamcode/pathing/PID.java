@@ -30,7 +30,10 @@ public class PID {
 
         d = kD * (error - prevError)/(time-prevTime);
 
-        return d;
+        prevError = error;
+        prevTime = time;
+
+        return speed * (p + i + d);
 
     }
 }
