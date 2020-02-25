@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import org.firstinspires.ftc.teamcode.Skystone2753.util.OdometryGlobalCoordinatePosition;
+
 
 /**
  * Created by Sarthak on 10/4/2019.
@@ -19,8 +19,8 @@ public class MyOdometryOpmode extends LinearOpMode {
     final double COUNTS_PER_INCH = 307.699557;
 
     //Hardware Map Names for drive motors and odometry wheels. THIS WILL CHANGE ON EACH ROBOT, YOU NEED TO UPDATE THESE VALUES ACCORDINGLY
-    String rfName = "rf", rbName = "rb", lfName = "lf", lbName = "lb";
-    String verticalLeftEncoderName = rbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
+    String rfName = "right_front", rbName = "right_back", lfName = "left_front", lbName = "left_back";
+    String verticalLeftEncoderName = "intake_left", verticalRightEncoderName = "lift_left", horizontalEncoderName = "intake_right";
 
     OdometryGlobalCoordinatePosition globalPositionUpdate;
 

@@ -11,6 +11,9 @@ public class OdometryTest extends LinearOpMode {
     Robot robot = new Robot(this);
     @Override
     public void runOpMode() throws InterruptedException {
+
+        waitForStart();
+
         while (opModeIsActive()) {
             telemetry.addData("X ", robot.getX());
             telemetry.addData("Y ", robot.getY());

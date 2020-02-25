@@ -25,7 +25,7 @@ public class Robot {
     final double COUNTS_PER_INCH = 307.699557;
 
     //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-    String verticalLeftEncoderName = "rf", verticalRightEncoderName = "lf", horizontalEncoderName = "lb";
+    String verticalLeftEncoderName = "intake_left", verticalRightEncoderName = "lift_left", horizontalEncoderName = "intake_right";
 
     // LinearOpMode required for telemetry and hardwareMap
     public LinearOpMode linearOpMode = null;
@@ -71,7 +71,7 @@ public class Robot {
         final double COUNTS_PER_INCH = 307.699557;
 
         //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        String verticalLeftEncoderName = "rf", verticalRightEncoderName = "lf", horizontalEncoderName = "lb";
+        String verticalLeftEncoderName = "intake_left", verticalRightEncoderName = "lift_left", horizontalEncoderName = "intake_right";
         OdometryGlobalCoordinatePosition globalPositionUpdate = new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
@@ -85,7 +85,7 @@ public class Robot {
         final double COUNTS_PER_INCH = 307.699557;
 
         //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        String verticalLeftEncoderName = "rf", verticalRightEncoderName = "lf", horizontalEncoderName = "lb";
+        String verticalLeftEncoderName = "intake_left", verticalRightEncoderName = "lift_left", horizontalEncoderName = "intake_right";
         OdometryGlobalCoordinatePosition globalPositionUpdate = new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
