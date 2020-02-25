@@ -22,17 +22,10 @@ public class Robot {
     public drivetrain drive;
     BNO055IMU.Parameters IMUparameters = new BNO055IMU.Parameters();
     DcMotor verticalRight, verticalLeft, horizontal;
-    public void initOdometry() {
-        //Odometry encoder wheels
-        DcMotor verticalRight, verticalLeft, horizontal;
+    final double COUNTS_PER_INCH = 307.699557;
 
-        //The amount of encoder ticks for each inch the robot moves. This will change for each robot and needs to be changed here
-        final double COUNTS_PER_INCH = 307.699557;
-
-        //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        String verticalLeftEncoderName = "rf", verticalRightEncoderName = "lf", horizontalEncoderName = "lb";
-    }
-
+    //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
+    String verticalLeftEncoderName = "rf", verticalRightEncoderName = "lf", horizontalEncoderName = "lb";
 
     // LinearOpMode required for telemetry and hardwareMap
     public LinearOpMode linearOpMode = null;
@@ -40,6 +33,7 @@ public class Robot {
     // give linearOpMode a reference to the calling OpMode
     public Robot(LinearOpMode linearOpMode) {
         this.linearOpMode = linearOpMode;
+
         if (drive == null)
             drive = new drivetrain(linearOpMode);
 

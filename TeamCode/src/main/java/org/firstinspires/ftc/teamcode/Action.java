@@ -6,7 +6,7 @@ public abstract class Action {
 
     Robot robot;
     boolean running = false;
-    boolean runable = true;
+    public boolean runable = true;
     public abstract void start();
     public abstract void update();
     public abstract void finish();
