@@ -11,23 +11,27 @@ import org.firstinspires.ftc.teamcode.util.Pos;
 
 public class Trajectory {
     public Pos[] path = new Pos[10000];
+    private Point[] tracePath = new Point[10000];
+
     private int endPoint = 0;
     private Robot robot;
     public int r = 1;
     AHolder[] actions = new AHolder[10];
-    int checkedPoint = 0;
+    public int checkedPoint = 0;
     double speed = 1;
     double v = speed;
     double totalI = 0;
     double lastD = 1;
 
     boolean usePID = true;
+    /*
     public int getV(double error) {
         totalI += error * PID.kI;
         System.out.println("D: " + lastD);
         System.out.println(totalI + ", " + lastD + ", " + (int) (-10 * PID.dilate(error, totalI, PID.updateD(lastD, error)) + 12));
         return (int) ((-10 * PID.dilate(error, totalI, PID.updateD(lastD, error))) + 14);
     }
+    */
     public Trajectory(Robot robot) {
         this.robot = robot;
     }
