@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.pathing.Trajectory;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 public abstract class Team2753LinearOpMode extends LinearOpMode {
 
     Trajectory currentTrajectory;
+    ElapsedTime time = new ElapsedTime();
     ArrayList<Action> running = new ArrayList<Action>();
     ArrayList<Action> remove = new ArrayList<Action>();
 
@@ -37,6 +40,21 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
             remove.clear();
             if(currentTrajectory.getEndPoint() - currentTrajectory.checkedPoint < trajectory.r)
                 trajectory.r--;
+            if(isOnRadius(currentTrajectory.path[currentTrajectory.checkedPoint])) {
+                double relativeAngle = (Math.atan2(currentTrajectory.path[currentTrajectory.checkedPoint].y - robot.getY(),
+                        currentTrajectory.path[currentTrajectory.checkedPoint].x - robot.getX()) - Math.PI / 4)
+                        - Math.toRadians(robot.angles.firstAngle);
+                if (Math.abs(relativeAngle) > Math.PI) {
+                    if (relativeAngle > 0)
+                        relativeAngle = -(Math.PI * 2 - Math.abs(relativeAngle));
+                    else if (relativeAngle > 0)
+                        relativeAngle = Math.PI * 2 - Math.abs(relativeAngle);
+                }
+                robot.drive.move(relativeAngle, currentTrajectory.pid.getSpeed(currentTrajectory.speed,currentTrajectory.getEndPoint() - currentTrajectory.checkedPoint, time.milliseconds()), Range.clip(((currentTrajectory.path[currentTrajectory.checkedPoint].theta+robot.getTheta())/30),1,-1));
+
+            } else {
+                currentTrajectory.checkedPoint++;
+            }
         }
     }
     private boolean isOnRadius(Point point) {
@@ -54,5 +72,12 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
         a.running = true;
         running.add(a);
 
+    }
+    private double cut(double clip) {
+        if (clip < 0){
+            return 0;
+        } else {
+            return clip;
+        }
     }
 }
