@@ -18,6 +18,8 @@ public class Robot {
 
     public BNO055IMU imu;
     public Orientation angles;
+
+    public drivetrain drive;
     BNO055IMU.Parameters IMUparameters = new BNO055IMU.Parameters();
     DcMotor verticalRight, verticalLeft, horizontal;
     public void initOdometry() {
@@ -38,6 +40,9 @@ public class Robot {
     // give linearOpMode a reference to the calling OpMode
     public Robot(LinearOpMode linearOpMode) {
         this.linearOpMode = linearOpMode;
+        if (drive == null)
+            drive = new drivetrain(linearOpMode);
+
     }
     // update robot position and angle
     public void run() {
