@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -27,15 +28,42 @@ public class Robot {
     //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
     String verticalLeftEncoderName = "intake_left", verticalRightEncoderName = "lift_left", horizontalEncoderName = "intake_right";
 
+    OdometryGlobalCoordinatePosition globalPositionUpdate = null;
+    Thread positionThread = null;
     // LinearOpMode required for telemetry and hardwareMap
     public LinearOpMode linearOpMode = null;
 
     // give linearOpMode a reference to the calling OpMode
+    public Robot() {}
     public Robot(LinearOpMode linearOpMode) {
+
         this.linearOpMode = linearOpMode;
 
-        if (drive == null)
-            drive = new drivetrain(linearOpMode);
+        drive = new drivetrain(linearOpMode);
+
+        verticalLeft = linearOpMode.hardwareMap.dcMotor.get(verticalLeftEncoderName);
+        verticalRight = linearOpMode.hardwareMap.dcMotor.get(verticalRightEncoderName);
+        horizontal = linearOpMode.hardwareMap.dcMotor.get(horizontalEncoderName);
+
+        verticalRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        verticalLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        horizontal.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        verticalLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        verticalRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        horizontal.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //Set the mode of the odometry encoders to RUN_WITHOUT_ENCODER
+        verticalRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        verticalLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        horizontal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        globalPositionUpdate= new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
+
+        positionThread = new Thread(globalPositionUpdate);
+        positionThread.start();
+
+        initIMU();
 
     }
     // update robot position and angle
@@ -68,29 +96,17 @@ public class Robot {
 
 
         //The amount of encoder ticks for each inch the robot moves. This will change for each robot and needs to be changed here
-        final double COUNTS_PER_INCH = 307.699557;
-
         //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        String verticalLeftEncoderName = "intake_left", verticalRightEncoderName = "lift_left", horizontalEncoderName = "intake_right";
-        OdometryGlobalCoordinatePosition globalPositionUpdate = new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
-        Thread positionThread = new Thread(globalPositionUpdate);
-        positionThread.start();
         x = globalPositionUpdate.returnXCoordinate();
-        return x;
+        return -x/1000;
     }
     public double getY() {
         //Odometry encoder wheels
 
         //The amount of encoder ticks for each inch the robot moves. This will change for each robot and needs to be changed here
-        final double COUNTS_PER_INCH = 307.699557;
-
         //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        String verticalLeftEncoderName = "intake_left", verticalRightEncoderName = "lift_left", horizontalEncoderName = "intake_right";
-        OdometryGlobalCoordinatePosition globalPositionUpdate = new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
-        Thread positionThread = new Thread(globalPositionUpdate);
-        positionThread.start();
         y = globalPositionUpdate.returnYCoordinate();
-        return y;
+        return y/1000;
     }
     public void resetPos() {
         x=0;

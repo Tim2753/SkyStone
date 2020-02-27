@@ -33,6 +33,7 @@ public class Trajectory {
     */
     public Trajectory(Robot robot) {
         this.robot = robot;
+        pid = new PID();
     }
     public Trajectory startingPoint(int x, int y) {
         path[0] = new Pos(x,y,robot.getTheta());
@@ -162,6 +163,10 @@ public class Trajectory {
                 break;
             }
         }
+        return this;
+    }
+    public Trajectory usePID(boolean use) {
+        usePID = use;
         return this;
     }
 

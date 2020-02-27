@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.pathing;
 
 public class PID {
 
-    public static double kP = 4;
+    public static double kP = 1;
     public static double kI = 0;
-    public static double kD = 1;
+    public static double kD = 0;
     public double prevError;
     public double prevTime;
     public double i = 0;

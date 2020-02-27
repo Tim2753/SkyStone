@@ -10,17 +10,18 @@ public class drivetrain extends Robot {
 
     public drivetrain(LinearOpMode linearOpMode) {
 
-        super(linearOpMode);
-        brake();
+        super.linearOpMode = linearOpMode;
         init();
+        brake();
+
     }
     public void move(double angle, double speed, double turn) {
         if (speed > 1)
             speed = 1;
         frontLeft.setPower((speed * Math.cos(angle) * (2 / Math.sqrt(2))) + turn);
-        frontLeft.setPower((speed * Math.sin(angle) * (2 / Math.sqrt(2))) - turn);
-        frontLeft.setPower((speed * Math.sin(angle) * (2 / Math.sqrt(2))) + turn);
-        frontLeft.setPower((speed * Math.cos(angle) * (2 / Math.sqrt(2))) - turn);
+        frontRight.setPower((speed * Math.sin(angle) * (2 / Math.sqrt(2))) - turn);
+        backLeft.setPower((speed * Math.sin(angle) * (2 / Math.sqrt(2))) + turn);
+        backRight.setPower((speed * Math.cos(angle) * (2 / Math.sqrt(2))) - turn);
 
     }
     public void init() {

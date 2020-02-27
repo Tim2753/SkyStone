@@ -15,12 +15,17 @@ import java.util.ArrayList;
 public abstract class Team2753LinearOpMode extends LinearOpMode {
 
     Trajectory currentTrajectory;
-    ElapsedTime time = new ElapsedTime();
-    ArrayList<Action> running = new ArrayList<Action>();
-    ArrayList<Action> remove = new ArrayList<Action>();
+    ElapsedTime time;
+    ArrayList<Action> running;
+    ArrayList<Action> remove;
+    public Robot robot;
 
-
-    Robot robot = new Robot(this);
+    public void invoke() {
+        robot = new Robot(this);
+        remove = new ArrayList<Action>();
+        running = new ArrayList<Action>();
+        time = new ElapsedTime();
+    }
     public abstract void runOpMode();
     public Trajectory newTrajectory() {
         return new Trajectory(robot);
@@ -28,6 +33,12 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
     public void build(Trajectory trajectory) {
         currentTrajectory = trajectory;
         while (currentTrajectory.r > 1) {
+
+            robot.run();
+            telemetry.addData("X: ", robot.getX());
+            telemetry.addData("Y: ", robot.getY());
+            telemetry.addData("THETA: ", robot.getTheta());
+            telemetry.update();
             for (Action a : running) {
                 a.update();
                 if (a.running == false) {
@@ -52,10 +63,17 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
                         relativeAngle = Math.PI * 2 - Math.abs(relativeAngle);
                 }
                 if (currentTrajectory.path[currentTrajectory.checkedPoint].theta > 1000) {
-                    robot.drive.move(relativeAngle, currentTrajectory.pid.getSpeed(currentTrajectory.speed,currentTrajectory.getEndPoint() - currentTrajectory.checkedPoint, time.milliseconds()), Range.clip((optimize(angle.getAngle(currentTrajectory.tracePath[currentTrajectory.tracePoint-10], currentTrajectory.tracePath[currentTrajectory.tracePoint-1])+robot.getTheta())/30),1,-1));
 
-                } else
-                robot.drive.move(relativeAngle, currentTrajectory.pid.getSpeed(currentTrajectory.speed,currentTrajectory.getEndPoint() - currentTrajectory.checkedPoint, time.milliseconds()), Range.clip((optimize(currentTrajectory.path[currentTrajectory.checkedPoint].theta-robot.getTheta())/30),1,-1));
+                    if (currentTrajectory.tracePoint >10000) {
+                        robot.drive.move(relativeAngle, currentTrajectory.pid.getSpeed(currentTrajectory.speed, currentTrajectory.getEndPoint() - currentTrajectory.checkedPoint, time.milliseconds()),
+                                -0 * Range.clip((optimize(angle.getAngle(currentTrajectory.tracePath[currentTrajectory.tracePoint - 10], currentTrajectory.tracePath[currentTrajectory.tracePoint - 1]) + robot.getTheta()) / 30), 1, -1));
+                    } else {
+                        robot.drive.move(relativeAngle, currentTrajectory.pid.getSpeed(currentTrajectory.speed, currentTrajectory.getEndPoint() - currentTrajectory.checkedPoint, time.milliseconds()),0);
+
+                    }
+                } else {
+                    robot.drive.move(relativeAngle, currentTrajectory.pid.getSpeed(currentTrajectory.speed,currentTrajectory.getEndPoint() - currentTrajectory.checkedPoint, time.milliseconds()), 0*Range.clip((optimize(currentTrajectory.path[currentTrajectory.checkedPoint].theta-robot.getTheta())/30),1,-1));
+                }
 
             } else {
                 currentTrajectory.checkedPoint++;
@@ -70,6 +88,8 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
                     }
                 }
             }
+            currentTrajectory.tracePath[currentTrajectory.tracePoint] = new Point(robot.getX(),robot.getY());
+            currentTrajectory.tracePoint++;
         }
     }
     private boolean isOnRadius(Point point) {
