@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.util.Pos;
 
 
 public class Trajectory {
+
     public Pos[] path = new Pos[10000];
     public Point[] tracePath = new Point[10000];
     public PID pid;
@@ -17,7 +18,7 @@ public class Trajectory {
 
     private int endPoint = 0;
     private Robot robot;
-    public int r = 1;
+    public double r = 1;
     public AHolder[] actions = new AHolder[10];
     public int checkedPoint = 0;
     public double speed = 1;

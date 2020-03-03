@@ -15,15 +15,12 @@ public class sampleAuto extends Team2753LinearOpMode {
         invoke();
         waitForStart();
 
-        build(newTrajectory().radius(8)
+        build(newTrajectory().radius(6)
                 .usePID(true)
-                .startingPoint(0,-1)
+                .startingPoint(0,0)
                 .speed(1.0)
-                .addPoint(0,21)
-                .addPoint(9,30)
-                .addPoint(31,30)
-                .addPoint(63,15)
-                .addPoint(84,33));
+                .addPoint(0,24,0)
+        );
 
         while (true){
             robot.run();

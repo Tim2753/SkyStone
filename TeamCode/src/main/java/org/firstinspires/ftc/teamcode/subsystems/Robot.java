@@ -21,6 +21,8 @@ public class Robot {
     public Orientation angles;
 
     public drivetrain drive;
+    public lift lift;
+    public v4b v4b;
     BNO055IMU.Parameters IMUparameters = new BNO055IMU.Parameters();
     DcMotor verticalRight, verticalLeft, horizontal;
     final double COUNTS_PER_INCH = 307.699557;
@@ -40,6 +42,8 @@ public class Robot {
         this.linearOpMode = linearOpMode;
 
         drive = new drivetrain(linearOpMode);
+        lift = new lift(linearOpMode);
+        v4b = new v4b(linearOpMode);
 
         verticalLeft = linearOpMode.hardwareMap.dcMotor.get(verticalLeftEncoderName);
         verticalRight = linearOpMode.hardwareMap.dcMotor.get(verticalRightEncoderName);
@@ -71,6 +75,10 @@ public class Robot {
         updateAngle();
         theta = angles.firstAngle;
         linearOpMode.telemetry.update();
+        y = globalPositionUpdate.returnYCoordinate();
+        x = -globalPositionUpdate.returnXCoordinate();
+        lift.run();
+
         clipTheta();
     }
     // initialize IMU to get angle
@@ -97,15 +105,13 @@ public class Robot {
 
         //The amount of encoder ticks for each inch the robot moves. This will change for each robot and needs to be changed here
         //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        x = globalPositionUpdate.returnXCoordinate();
-        return -x/1000;
+        return x/1000;
     }
     public double getY() {
         //Odometry encoder wheels
 
         //The amount of encoder ticks for each inch the robot moves. This will change for each robot and needs to be changed here
         //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        y = globalPositionUpdate.returnYCoordinate();
         return y/1000;
     }
     public void resetPos() {

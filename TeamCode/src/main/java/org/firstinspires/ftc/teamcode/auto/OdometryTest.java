@@ -16,6 +16,7 @@ public class OdometryTest extends Team2753LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            robot.run();
             telemetry.addData("X ", robot.getX());
             telemetry.addData("Y ", robot.getY());
             telemetry.update();

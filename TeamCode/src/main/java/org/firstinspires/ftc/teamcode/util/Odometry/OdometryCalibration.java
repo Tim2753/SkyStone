@@ -35,7 +35,7 @@ public class OdometryCalibration extends LinearOpMode {
     final double PIVOT_SPEED = 0.5;
 
     //The amount of encoder ticks for each inch the robot moves. THIS WILL CHANGE FOR EACH ROBOT AND NEEDS TO BE UPDATED HERE
-    final double COUNTS_PER_INCH = 307.699557;
+    final double COUNTS_PER_INCH = 1103.977386;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -112,8 +112,10 @@ public class OdometryCalibration extends LinearOpMode {
         horizontalTickOffset = horizontal.getCurrentPosition()/Math.toRadians(getZAngle());
 
         //Write the constants to text files
+
         ReadWriteFile.writeFile(wheelBaseSeparationFile, String.valueOf(wheelBaseSeparation));
         ReadWriteFile.writeFile(horizontalTickOffsetFile, String.valueOf(horizontalTickOffset));
+
 
         while(opModeIsActive()){
             telemetry.addData("Odometry System Calibration Status", "Calibration Complete");
