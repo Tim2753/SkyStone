@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.actions.DOWN;
 import org.firstinspires.ftc.teamcode.math.angle;
 import org.firstinspires.ftc.teamcode.pathing.Trajectory;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
@@ -15,9 +16,10 @@ import java.util.ArrayList;
 
 public abstract class Team2753LinearOpMode extends LinearOpMode {
 
+    protected DOWN DOWN;
     Trajectory currentTrajectory;
-    ElapsedTime time;
-    ArrayList<Action> running;
+    protected ElapsedTime time;
+    protected ArrayList<Action> running;
     ArrayList<Action> remove;
     double prevTime = 0;
     public Robot robot;
@@ -26,13 +28,14 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
         robot = new Robot(this);
         remove = new ArrayList<Action>();
         running = new ArrayList<Action>();
+        DOWN = new DOWN();
         time = new ElapsedTime();
     }
     public abstract void runOpMode();
     public Trajectory newTrajectory() {
         return new Trajectory(robot);
     }
-   public void build(Trajectory trajectory) {
+   public void build(Trajectory trajectory, String hi) {
 
         currentTrajectory = trajectory;
 
@@ -110,7 +113,7 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
     private boolean isOnRadius(Point point) {
         int x = (int) (point.x - robot.getX());
         int y = (int) (point.y - robot.getY());
-        if ((int) Math.sqrt((x*x) + (y*y))- 2 < currentTrajectory.r && Math.sqrt((x*x) + (y*y)) +2 > currentTrajectory.r) {
+        if ((int) Math.sqrt((x*x) + (y*y)) < currentTrajectory.r + 1 && Math.sqrt((x*x) + (y*y)) > currentTrajectory.r-1) {
             return true;
         } else {
             return false;
@@ -122,6 +125,21 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
         a.running = true;
         running.add(a);
 
+    }
+    public void run() {
+        robot.run();
+        telemetry.update();
+        for (Action a : running) {
+            a.update();
+            if (a.running == false) {
+                a.finish();
+                remove.add(a);
+            }
+        }
+        for (Action a : remove) {
+            running.remove(a);
+        }
+        remove.clear();
     }
     private double cut(double clip) {
         if (clip < 0){
@@ -139,29 +157,83 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
             return angle;
         }
     }
-    /*public void build(Trajectory trajectory) {
+    public void build(Trajectory trajectory) {
 
         currentTrajectory = trajectory;
+
+
         while (currentTrajectory.r > 1) {
+
+            telemetry.addData("x: ", robot.getX());
+            telemetry.addData("y: ", robot.getY());
+            telemetry.addData("cp: ", currentTrajectory.checkedPoint + "/" + currentTrajectory.getEndPoint());
+            currentTrajectory.path[currentTrajectory.checkedPoint].debug(this);
+
+
 
             robot.run();
 
-            if (isOnRadius(currentTrajectory.path[currentTrajectory.checkedPoint])) {
-                currentTrajectory.tracePath[currentTrajectory.tracePoint] = new Point(robot.getX(), robot.getY());
-                currentTrajectory.tracePoint++;
-                Line line = new Line(currentTrajectory.path[currentTrajectory.checkedPoint],
-                        currentTrajectory.path[currentTrajectory.checkedPoint + 1]);
-                double relativeAngle = line.getAngle() - robot.getTheta();
-                robot.drive.move(relativeAngle,1,0);
-                telemetry.addData(" ", relativeAngle-robot.getTheta());
+            if (currentTrajectory.checkedPoint + (10*currentTrajectory.r)+1 > currentTrajectory.getEndPoint()) {
+                currentTrajectory.r-= 0.5;
+                telemetry.addLine("??");
             } else {
-                if (currentTrajectory.checkedPoint + currentTrajectory.r+1 < currentTrajectory.getEndPoint()) {
-                    currentTrajectory.r-= 0.5;
+                if (isOnRadius(currentTrajectory.path[currentTrajectory.checkedPoint])) {
+                    currentTrajectory.tracePath[currentTrajectory.tracePoint] = new Point(robot.getX(), robot.getY());
+                    currentTrajectory.tracePoint++;
+                    Line line = new Line(new Point(robot.getX(), robot.getY()),
+                            currentTrajectory.path[currentTrajectory.checkedPoint]);
+                    double relativeAngle = line.getAngle() - robot.getTheta() - 45;
+                    telemetry.addData("MOVE: " , robot.getTheta());
+                    if (Math.abs(relativeAngle) > 180) {
+                        if (relativeAngle >= 0)
+                            relativeAngle = Math.abs(relativeAngle) - 360;
+                        else if (relativeAngle < 0)
+                            relativeAngle = 360 - Math.abs(relativeAngle);
+                    }
+                    robot.drive.move(relativeAngle, 0.4,0);
+                    telemetry.addData(" ", relativeAngle);
+                    telemetry.update();
+
+
+                } else {
+                    currentTrajectory.checkedPoint++;
                 }
             }
-
         }
+
+    }
+   public void run(Trajectory t) {
+        Point p;
+        Line line;
+
+        t.checkedPoint += t.r*5;
+        while (true) {
+
+            sleep(100);
+            telemetry.addLine("checked Point" + t.checkedPoint);
+            telemetry.addLine(t.path[t.checkedPoint].x + " " + t.path[t.checkedPoint].y);
+            robot.run();
+            line = new Line(new Point(robot.getX(), robot.getY()),
+                    t.path[t.checkedPoint]);
+            telemetry.addLine("angle: " + line.getAngle() + "- robotTheta: " + robot.getTheta() + "- 45 = " + (line.getAngle()-robot.getTheta()-45));
+
+            p =  new Point(t.path[t.checkedPoint].x, t.path[t.checkedPoint].y);
+            if (Math.sqrt(((p.x - robot.getX())*(p.x - robot.getX())) +
+                    ((p.y - robot.getY())*(p.y - robot.getY()))) <= t.r+2 &&
+                    Math.sqrt(((p.x - robot.getX())*(p.x - robot.getX())) +
+                    ((p.y - robot.getY())*(p.y - robot.getY()))) >= t.r) {
+
+                robot.drive.move(line.getAngle()-robot.getTheta()-45,1,0);
+            } else {
+                 t.checkedPoint+=3;
+            }
+            if (t.checkedPoint > t.getEndPoint()-7) {
+                break;
+            }
+        }
+        robot.drive.move(90,0,0);
+        robot.drive.kill();
     }
 
-     */
+
 }

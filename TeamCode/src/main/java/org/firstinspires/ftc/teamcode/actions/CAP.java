@@ -9,7 +9,7 @@ public class CAP extends Action {
         this.robot = linearOpMode.robot;
 
         if(robot.v4b.isCapped) {
-            robot.v4b.release();
+            robot.v4b.lock();
         } else {
             robot.v4b.cap();
         }

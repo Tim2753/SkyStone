@@ -15,20 +15,13 @@ public class sampleAuto extends Team2753LinearOpMode {
         invoke();
         waitForStart();
 
-        build(newTrajectory().radius(6)
+        run(newTrajectory().radius(3)
                 .usePID(true)
                 .startingPoint(0,0)
                 .speed(1.0)
                 .addPoint(0,24,0)
+                //.addPoint(24,24,0)
         );
-
-        while (true){
-            robot.run();
-            telemetry.addData("X: ", robot.getX());
-            telemetry.addData("Y: ", robot.getY());
-            telemetry.addData("THETA: ", robot.getTheta());
-            telemetry.update();
-        }
 
     }
 

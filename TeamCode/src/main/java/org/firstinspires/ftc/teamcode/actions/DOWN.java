@@ -20,7 +20,7 @@ public class DOWN extends Action {
     public void update() {
 
         robot.lift.setPower(-robot.lift.pid.getSpeed(1,robot.lift.encoder.getCurrentPosition()/10000, time.milliseconds()));
-        if (robot.lift.encoder.getCurrentPosition() < 1000) {
+        if (robot.lift.encoder.getCurrentPosition() < 2000) {
             running = false;
         }
     }

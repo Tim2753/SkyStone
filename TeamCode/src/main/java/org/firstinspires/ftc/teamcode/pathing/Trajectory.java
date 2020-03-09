@@ -90,30 +90,29 @@ public class Trajectory {
         Pos endingPoint = new Pos(x,y,theta);
         Line line = new Line(startPoint,endingPoint);
         if (Math.abs(line.getAngle()) > 45 && Math.abs(line.getAngle()) < 135) {
-            System.out.println("Y");
             if(endingPoint.y > startPoint.y) {
-                for (int i = 0; i < endingPoint.y - startPoint.y; i++) {
+                for (int i = 0; i < 10*(endingPoint.y - startPoint.y); i++) {
                     endPoint++;
-                    path[endPoint] = new Pos((int) (((startPoint.y + i) - line.a)/line.b),(int) startPoint.y + i,endingPoint.theta);
+                    path[endPoint] = new Pos((((startPoint.y + (i*0.1) - line.a)/line.b)), startPoint.y + (i*0.1),endingPoint.theta);
                 }
             } else {
-                for (int i = 0; i < Math.abs(endingPoint.y - startPoint.y); i++) {
+                for (int i = 0; i < 10*Math.abs(endingPoint.y - startPoint.y); i++) {
 
                     endPoint++;
-                    path[endPoint] = new Pos((int) (((startPoint.y - i) - line.a)/line.b),(int) startPoint.y - i,endingPoint.theta);
+                    path[endPoint] = new Pos((((startPoint.y - (i*0.1)) - line.a)/line.b),startPoint.y - (i*0.1),endingPoint.theta);
                 }
             }
         }
         else {
             if(endingPoint.x > startPoint.x) {
-                for (int i = 0; i < endingPoint.x - startPoint.x; i++) {
+                for (int i = 0; i < 10*(endingPoint.x - startPoint.x); i++) {
                     endPoint++;
-                    path[endPoint] = new Pos((int) startPoint.x + i,(int) (((startPoint.x + i)* line.b) + line.a),endingPoint.theta);
+                    path[endPoint] = new Pos( startPoint.x + (i*0.1), (((startPoint.x + (i*0.1))* line.b) + line.a),endingPoint.theta);
                 }
             } else {
-                for (int i = 0; i < Math.abs(endingPoint.x - startPoint.x); i++) {
+                for (int i = 0; i < 10*Math.abs(endingPoint.x - startPoint.x); i++) {
                     endPoint++;
-                    path[endPoint] = new Pos((int) startPoint.x - i,(int) (((startPoint.x - i)* line.b) + line.a),endingPoint.theta);
+                    path[endPoint] = new Pos( startPoint.x - (i*0.1), (((startPoint.x - (i*0.1))* line.b) + line.a),endingPoint.theta);
                 }
             }
         }

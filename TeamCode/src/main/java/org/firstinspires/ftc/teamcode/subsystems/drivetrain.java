@@ -18,10 +18,10 @@ public class drivetrain extends Robot {
     public void move(double angle, double speed, double turn) {
         if (speed > 1)
             speed = 1;
-        frontLeft.setPower((speed * Math.cos(angle) *(2/Math.sqrt(2))) + 0.3*turn);
-        frontRight.setPower((speed * Math.sin(angle)*(2/Math.sqrt(2))) - 0.3*turn);
-        backLeft.setPower((speed * Math.sin(angle) * (2/Math.sqrt(2))) + 0.3*turn);
-        backRight.setPower((speed * Math.cos(angle) * (2/Math.sqrt(2))) - 0.3*turn);
+        frontLeft.setPower((speed * Math.cos(angle)) + 0.3*turn);
+        frontRight.setPower((speed * Math.sin(angle)) - 0.3*turn);
+        backLeft.setPower((speed * Math.sin(angle)) + 0.3*turn);
+        backRight.setPower((speed * Math.cos(angle) ) - 0.3*turn);
 
     }
     public void init() {
@@ -42,5 +42,11 @@ public class drivetrain extends Robot {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+    public void kill() {
+        frontLeft.setPower(0);
+        frontRight.setPower(0);
+        backLeft.setPower(0);
+        backRight.setPower(0);
     }
 }

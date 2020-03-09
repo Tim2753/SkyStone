@@ -109,7 +109,9 @@ public class OdometryCalibration extends LinearOpMode {
 
         double wheelBaseSeparation = (2*90*verticalEncoderTickOffsetPerDegree)/(Math.PI*COUNTS_PER_INCH);
 
-        horizontalTickOffset = horizontal.getCurrentPosition()/Math.toRadians(getZAngle());
+                horizontalTickOffset = horizontal.getCurrentPosition()/Math.toRadians(getZAngle());
+        //horizontalTickOffset = 0;
+
 
         //Write the constants to text files
 

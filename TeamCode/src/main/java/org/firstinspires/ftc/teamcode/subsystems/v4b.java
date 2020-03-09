@@ -49,4 +49,8 @@ public class v4b {
         capper.setPosition(HOLD_POS);
         isCapped = false;
     }
+    public void rotate(double pos) {
+        armRight.setPosition(1-pos);
+        armLeft.setPosition(pos);
+    }
 }

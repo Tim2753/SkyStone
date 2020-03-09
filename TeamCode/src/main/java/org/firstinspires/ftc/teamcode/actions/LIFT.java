@@ -8,6 +8,7 @@ public class LIFT extends Action {
     @Override
     public void start(Team2753LinearOpMode linearOpMode) {
         this.robot = linearOpMode.robot;
+        linearOpMode.telemetry.addLine("BEEP");
 
         if (linearOpMode.gamepad2 != null)
             linearOpMode.robot.lift.setPower(linearOpMode.gamepad2.left_stick_y);
