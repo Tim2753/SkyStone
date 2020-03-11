@@ -14,6 +14,8 @@ public class lift {
 
     public PID pid;
 
+    public double steadyState;
+
     // encoder
     public DcMotor encoder;
 
@@ -45,7 +47,10 @@ public class lift {
 
     }
     public void setPower(double power) {
-        leftSpeed = power;
-        rightSpeed = power;
+        leftSpeed = power + steadyState;
+        rightSpeed = power + steadyState;
+    }
+    public void setSteadyState(double power) {
+        steadyState = power;
     }
 }

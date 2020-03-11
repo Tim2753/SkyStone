@@ -9,7 +9,7 @@ public class intake {
     public double speed = 0;
     LinearOpMode linearOpMode;
     Servo leftIntake, rightIntake;
-    DcMotor intake;
+    DcMotor intake1,intake2;
     static final double UP_POS = 0;
     static final double DOWN_POS = 0;
     static final double MID_POS = 0;
@@ -22,7 +22,9 @@ public class intake {
     }
     public void init() {
 
-        intake = linearOpMode.hardwareMap.get(DcMotor.class, "intake");
+        intake1 = linearOpMode.hardwareMap.get(DcMotor.class, "intake_left");
+        intake2 = linearOpMode.hardwareMap.get(DcMotor.class, "intake_right");
+
         leftIntake = linearOpMode.hardwareMap.get(Servo.class, "left_intake");
         rightIntake = linearOpMode.hardwareMap.get(Servo.class, "right_intake");
 
@@ -31,7 +33,8 @@ public class intake {
         this.speed = speed;
     }
     public void run() {
-        intake.setPower(speed);
+        intake1.setPower(speed);
+        intake2.setPower(-speed);
     }
     public void toPos(double pos) {
         leftIntake.setPosition(1-pos);

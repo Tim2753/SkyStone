@@ -24,6 +24,7 @@ public class Robot {
     public lift lift;
     public v4b v4b;
     public intake intake;
+    public foundation foundation;
 
     BNO055IMU.Parameters IMUparameters = new BNO055IMU.Parameters();
     DcMotor verticalRight, verticalLeft, horizontal;
@@ -47,6 +48,7 @@ public class Robot {
         lift = new lift(linearOpMode);
         v4b = new v4b(linearOpMode);
         intake = new intake(linearOpMode);
+        foundation = new foundation(linearOpMode);
 
         verticalLeft = linearOpMode.hardwareMap.dcMotor.get(verticalLeftEncoderName);
         verticalRight = linearOpMode.hardwareMap.dcMotor.get(verticalRightEncoderName);
@@ -81,6 +83,7 @@ public class Robot {
         y = globalPositionUpdate.returnYCoordinate()/ COUNTS_PER_INCH;
         x = -globalPositionUpdate.returnXCoordinate()/ COUNTS_PER_INCH;
         lift.run();
+        intake.run();
 
         clipTheta();
     }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.actions;
+package org.firstinspires.ftc.teamcode.actions.intake;
 
 import org.firstinspires.ftc.teamcode.Action;
 import org.firstinspires.ftc.teamcode.Team2753LinearOpMode;

@@ -152,7 +152,7 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
             return clip;
         }
     }
-    private double optimize(double angle) {
+    public double optimize(double angle) {
         if (angle > 180) {
             return angle - 360;
         } else if (angle < -180) {
