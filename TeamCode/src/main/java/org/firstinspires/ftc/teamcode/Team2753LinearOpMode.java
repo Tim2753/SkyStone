@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.actions.DOWN;
 import org.firstinspires.ftc.teamcode.math.angle;
 import org.firstinspires.ftc.teamcode.pathing.Trajectory;
+import org.firstinspires.ftc.teamcode.pathing.bCurve;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 import org.firstinspires.ftc.teamcode.util.Line;
 import org.firstinspires.ftc.teamcode.util.Point;
@@ -24,6 +25,7 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
     double prevTime = 0;
     public Robot robot;
 
+
     public void invoke() {
         robot = new Robot(this);
         remove = new ArrayList<Action>();
@@ -35,7 +37,8 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
     public Trajectory newTrajectory() {
         return new Trajectory(robot);
     }
-   public void build(Trajectory trajectory, String hi) {
+    /*
+    public void build(Trajectory trajectory, String hi) {
 
         currentTrajectory = trajectory;
 
@@ -109,6 +112,7 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
 
         }
     }
+    */
 
     private boolean isOnRadius(Point point) {
         int x = (int) (point.x - robot.getX());
@@ -157,6 +161,7 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
             return angle;
         }
     }
+    /*
     public void build(Trajectory trajectory) {
 
         currentTrajectory = trajectory;
@@ -233,6 +238,53 @@ public abstract class Team2753LinearOpMode extends LinearOpMode {
         }
         robot.drive.move(90,0,0);
         robot.drive.kill();
+    }
+
+     */
+    public boolean isCloseTo(Point p) {
+        return (Math.sqrt(((p.x - robot.getX())*(p.x - robot.getX()))+((p.y - robot.getY())*(p.y - robot.getY()))) < 2);
+    }
+    public void moveTo(Point p, double speed) {
+        Line line = new Line(new Point(robot.getX(), robot.getY()), p);
+        robot.drive.move(Math.toRadians(optimize(line.getAngle()-robot.getTheta()-45)),speed,0.1);
+    }
+    public void build(bCurve c) {
+        int selectedPoint = 0;
+        while (opModeIsActive() && selectedPoint < 998) {
+            /*if (isCloseTo(c.points.get(selectedPoint))) {
+                selectedPoint++;
+            } else {
+                moveTo(c.points.get(selectedPoint),0.5);
+            }
+            robot.run();
+
+             */
+            try {
+                telemetry.addData("Selected", selectedPoint);
+                telemetry.addData("robot x", robot.getX());
+                telemetry.addData("robot y", robot.getY());
+                telemetry.addData("x", c.points.get(selectedPoint).x);
+                telemetry.addData("y", c.points.get(selectedPoint).y);
+                if (isCloseTo(c.points.get(selectedPoint))) {
+                    selectedPoint += c.density;
+
+                }
+                moveTo(c.points.get(selectedPoint), 0.5);
+                robot.run();
+            } catch (Exception e) {
+                moveTo(c.points.get(selectedPoint-100),0.2);
+            }
+/*
+            sleep(1);
+            moveTo(c.points.get(selectedPoint),0.5);
+
+            selectedPoint++;
+
+ */
+        }
+    }
+    public bCurve newCurve() {
+        return new bCurve();
     }
 
 

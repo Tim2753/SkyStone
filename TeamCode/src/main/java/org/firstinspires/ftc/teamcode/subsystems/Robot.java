@@ -23,6 +23,8 @@ public class Robot {
     public drivetrain drive;
     public lift lift;
     public v4b v4b;
+    public intake intake;
+
     BNO055IMU.Parameters IMUparameters = new BNO055IMU.Parameters();
     DcMotor verticalRight, verticalLeft, horizontal;
     final double COUNTS_PER_INCH = 1103;
@@ -44,6 +46,7 @@ public class Robot {
         drive = new drivetrain(linearOpMode);
         lift = new lift(linearOpMode);
         v4b = new v4b(linearOpMode);
+        intake = new intake(linearOpMode);
 
         verticalLeft = linearOpMode.hardwareMap.dcMotor.get(verticalLeftEncoderName);
         verticalRight = linearOpMode.hardwareMap.dcMotor.get(verticalRightEncoderName);
@@ -105,7 +108,7 @@ public class Robot {
 
         //The amount of encoder ticks for each inch the robot moves. This will change for each robot and needs to be changed here
         //Hardware map names for the encoder wheels. Again, these will change for each robot and need to be updated below
-        return -x;
+        return x;
     }
     public double getY() {
         //Odometry encoder wheels

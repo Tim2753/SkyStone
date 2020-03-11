@@ -20,4 +20,7 @@ public class Point {
         this.x += x;
         this.y += y;
     }
+    public Pos cast(double rotation) {
+        return new Pos(x,y,rotation);
+    }
 }

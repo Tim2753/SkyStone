@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.util;
 import org.firstinspires.ftc.teamcode.math.angle;
 
 public class Line {
-    Point startingPoint;
-    Point endingPoint;
+    public Point startingPoint;
+    public Point endingPoint;
     public double a;
     public double b;
     public Line(Point start, Point end) {

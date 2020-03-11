@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Team2753LinearOpMode;
+import org.firstinspires.ftc.teamcode.util.Point;
 
 @Autonomous(name = "Auto")
 public class sampleAuto extends Team2753LinearOpMode {
@@ -15,13 +16,8 @@ public class sampleAuto extends Team2753LinearOpMode {
         invoke();
         waitForStart();
 
-        run(newTrajectory().radius(3)
-                .usePID(true)
-                .startingPoint(0,0)
-                .speed(1.0)
-                .addPoint(0,24,0)
-                //.addPoint(24,24,0)
-        );
+            build(newCurve().add(new Point(0,0)).add(new Point(0,20)).add(new Point(30,30)).density(20).compile());
+
 
     }
 
